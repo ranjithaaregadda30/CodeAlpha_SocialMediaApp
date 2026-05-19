@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Social Media App</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            background:#f0f2f5;
+        }
+
+        header{
+            background:#1877f2;
+            color:white;
+            padding:15px;
+            text-align:center;
+            font-size:28px;
+            font-weight:bold;
+        }
+
+        .container{
+            width:80%;
+            margin:20px auto;
+        }
+
+        .profile-card,
+        .post-box,
+        .post{
+            background:white;
+            padding:20px;
+            margin-bottom:20px;
+            border-radius:10px;
+            box-shadow:0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .profile-card img{
+            width:100px;
+            height:100px;
+            border-radius:50%;
+            display:block;
+            margin:auto;
+        }
+
+        .profile-card h2{
+            text-align:center;
+            margin-top:10px;
+        }
+
+        .profile-card p{
+            text-align:center;
+            color:gray;
+        }
+
+        .follow-btn{
+            display:block;
+            margin:15px auto;
+            padding:10px 20px;
+            border:none;
+            background:#1877f2;
+            color:white;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        .post-box textarea{
+            width:100%;
+            height:80px;
+            padding:10px;
+            border:1px solid #ccc;
+            border-radius:5px;
+            resize:none;
+        }
+
+        .post-btn{
+            margin-top:10px;
+            padding:10px 20px;
+            background:#28a745;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        .post h3{
+            margin-bottom:10px;
+        }
+
+        .actions{
+            margin-top:10px;
+        }
+
+        .actions button{
+            margin-right:10px;
+            padding:8px 15px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        .like-btn{
+            background:#e0245e;
+            color:white;
+        }
+
+        .comment-btn{
+            background:#1877f2;
+            color:white;
+        }
+
+        .comments{
+            margin-top:10px;
+        }
+
+        .comments input{
+            width:80%;
+            padding:8px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        .comments button{
+            padding:8px 12px;
+            background:#28a745;
+            color:white;
+            border:none;
+            border-radius:5px;
+        }
+
+        ul{
+            margin-top:10px;
+            padding-left:20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    Mini Social Media Platform
+</header>
+
+<div class="container">
+
+    <!-- User Profile -->
+    <div class="profile-card">
+        <img src="https://via.placeholder.com/100" alt="Profile">
+        <h2>John Doe</h2>
+        <p>Web Developer | Tech Enthusiast</p>
+        <button class="follow-btn" onclick="followUser()">Follow</button>
+    </div>
+
+    <!-- Create Post -->
+    <div class="post-box">
+        <h2>Create Post</h2>
+        <textarea id="postContent" placeholder="What's on your mind?"></textarea>
+        <button class="post-btn" onclick="createPost()">Post</button>
+    </div>
+
+    <!-- Posts Section -->
+    <div id="postsContainer"></div>
+
+</div>
+
+<script>
+
+    let followCount = 0;
+
+    function followUser(){
+        followCount++;
+
+        if(followCount === 1){
+            alert("You followed this user!");
+        }else{
+            alert("Already following!");
+        }
+    }
+
+    function createPost(){
+
+        const content = document.getElementById("postContent").value;
+
+        if(content.trim() === ""){
+            alert("Please write something!");
+            return;
+        }
+
+        const postDiv = document.createElement("div");
+        postDiv.classList.add("post");
+
+        postDiv.innerHTML = `
+            <h3>John Doe</h3>
+            <p>${content}</p>
+
+            <div class="actions">
+                <button class="like-btn" onclick="likePost(this)">
+                    Like (<span>0</span>)
+                </button>
+
+                <button class="comment-btn">
+                    Comment
+                </button>
+            </div>
+
+            <div class="comments">
+                <input type="text" placeholder="Write a comment">
+                <button onclick="addComment(this)">Add</button>
+
+                <ul></ul>
+            </div>
+        `;
+
+        document.getElementById("postsContainer").prepend(postDiv);
+
+        document.getElementById("postContent").value = "";
+    }
+
+    function likePost(button){
+
+        let span = button.querySelector("span");
+
+        let count = parseInt(span.innerText);
+
+        count++;
+
+        span.innerText = count;
+    }
+
+    function addComment(button){
+
+        const commentInput =
+            button.previousElementSibling;
+
+        const commentText = commentInput.value;
+
+        if(commentText.trim() === ""){
+            alert("Enter a comment!");
+            return;
+        }
+
+        const ul =
+            button.nextElementSibling;
+
+        const li = document.createElement("li");
+
+        li.innerText = commentText;
+
+        ul.appendChild(li);
+
+        commentInput.value = "";
+    }
+
+</script>
+
+</body>
+</html>
